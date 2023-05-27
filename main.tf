@@ -66,22 +66,6 @@ resource "aws_ecs_task_definition" "app_task" {
   execution_role_arn       = "${data.aws_iam_role.ecs_task_execution_role.arn}"
 }
 
-
-## Provide a reference to your default VPC
-#resource "aws_default_vpc" "default_vpc" {
-#}
-#
-## Provide references to your default subnets
-#resource "aws_default_subnet" "default_subnet_a" {
-#  # Use your own region here but reference to subnet 1a
-#  availability_zone = "eu-west-1a"
-#}
-#
-#resource "aws_default_subnet" "default_subnet_b" {
-#  # Use your own region here but reference to subnet 1b
-#  availability_zone = "eu-west-1b"
-#}
-
 resource "aws_alb" "application_load_balancer" {
   name               = "load-balancer-ebl" #load balancer name
   load_balancer_type = "application"
@@ -133,7 +117,7 @@ resource "aws_ecs_service" "app_service" {
   cluster         = "${aws_ecs_cluster.my_cluster.id}"   # Reference the created Cluster
   task_definition = "${aws_ecs_task_definition.app_task.arn}" # Reference the task that the service will spin up
   launch_type     = "FARGATE"
-  desired_count   = 3 # Set up the number of containers to 3
+  desired_count   = 2 # Set up the number of containers to 2
 
   load_balancer {
     target_group_arn = "${aws_lb_target_group.target_group.arn}" # Reference the target group
